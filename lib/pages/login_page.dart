@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:zyota/widgets/app_button.dart';
+import 'package:zyota/widgets/app_textfield.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final _tLogin = TextEditingController(text: "015697172275");
   final _tSenha = TextEditingController(text: "123123");
    //final _tLogin = TextEditingController();
-  //final _tSenha = TextEditingController();
+   //final _tSenha = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  LoginPage({super.key});
+  
+
+
+ @override
+ void initState(){
+  super.initState();
+ }
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +43,17 @@ class LoginPage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: ListView(
           children: [
-            _text("Login", "Digite o login", controller: _tLogin, validator: _validateLogin),
-            const SizedBox(
-              height: 10,
-            ),
-            _text("Senha", "Digite a senha", pwdtext: true, controller:_tSenha, validator: _validateSenha),
+            AppTextField("Login", "Digite o login", controller: _tLogin, 
+                      validator: _validateLogin, textInputAction: TextInputAction.next,),
+            const SizedBox(height: 16),
+            AppTextField("Senha", "Digite a senha", hiddindpwdtext: true, controller:_tSenha, 
+                       validator: _validateSenha, keyboardType: TextInputType.number,),
             const SizedBox(
               height: 20,
             ),
             SizedBox(
               height: 46,
-              child: _button("Login", _onClickLogin), 
+              child: AppButton("Login", _onClickLogin), 
             )
           ],
         ),
@@ -45,6 +61,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
+/*
   _button(String texto, onPressed) {
     return ElevatedButton(
         onPressed: onPressed,
@@ -55,13 +72,18 @@ class LoginPage extends StatelessWidget {
           );
   }
 
-  TextFormField _text(String label, String hint, {bool pwdtext = false, 
-  TextEditingController ?controller, FormFieldValidator<String> ?validator}) {
+ _text(String label, String hint, {bool pwdtext = false, 
+                        TextEditingController ?controller, 
+                        FormFieldValidator<String> ?validator,
+                        TextInputType ?keyboardType,
+                        TextInputAction ?textInputAction}) {
     return TextFormField(
       controller: controller,
       validator: validator,
       obscureText: pwdtext,
-      decoration: InputDecoration(
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
+       decoration: InputDecoration(
           labelText: label,
           labelStyle: const TextStyle(fontSize: 25, color: Colors.grey),
           hintText: hint,
@@ -71,8 +93,8 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
-
-  _onClickLogin() {
+*/
+ _onClickLogin() {
      if (!_formKey.currentState!.validate()){
       return;
     }
@@ -93,6 +115,11 @@ class LoginPage extends StatelessWidget {
          return "A senha precisa ter pelo menos 3 caracteres.";
      }
      return null; 
+  }
+
+  @override
+  void dispose(){
+    super.dispose();
   }
 
 }
