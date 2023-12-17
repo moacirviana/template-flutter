@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zyota/menu_drawer_list.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,6 +13,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: _body(),
+      drawer: MenuDrawerList(),
     );
   }
   

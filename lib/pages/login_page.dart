@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:zyota/domains/usuario.dart';
 import 'package:zyota/pages/home_page.dart';
 import 'package:zyota/pages/login_api.dart';
-import 'package:zyota/uitl/alert.dart';
-import 'package:zyota/uitl/nav.dart';
-import 'package:zyota/uitl/api_response.dart';
+import 'package:zyota/utils/alert.dart';
+import 'package:zyota/utils/nav.dart';
+import 'package:zyota/utils/api_response.dart';
 import 'package:zyota/widgets/app_button.dart';
 import 'package:zyota/widgets/app_textfield.dart';
 

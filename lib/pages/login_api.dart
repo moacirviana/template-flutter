@@ -1,5 +1,5 @@
 import 'dart:convert' as convert;
-import 'package:zyota/uitl/api_response.dart';
+import 'package:zyota/utils/api_response.dart';
 import 'package:zyota/domains/usuario.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,6 +21,7 @@ class LoginApi {
 
       if (response.statusCode == 200) {
         final user = Usuario.fromJson(jsonResponse);
+        user.save();
         return ApiResponse.ok(user);
         //return Future<bool>.value(true);
       }
