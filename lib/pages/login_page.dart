@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:zyota/domains/usuario.dart';
+import 'package:zyota/pages/home_page.dart';
+import 'package:zyota/pages/login_api.dart';
+import 'package:zyota/uitl/alert.dart';
+import 'package:zyota/uitl/nav.dart';
+import 'package:zyota/uitl/api_response.dart';
 import 'package:zyota/widgets/app_button.dart';
 import 'package:zyota/widgets/app_textfield.dart';
 
@@ -10,11 +16,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _tLogin = TextEditingController(text: "015697172275");
-  final _tSenha = TextEditingController(text: "123123");
+  final _tLogin = TextEditingController(text: "user");
+  final _tSenha = TextEditingController(text: "123");
    //final _tLogin = TextEditingController();
    //final _tSenha = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _showProgress = false;
   
 
 
@@ -53,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(
               height: 46,
-              child: AppButton("Login", _onClickLogin), 
+              child: AppButton("Login", _onClickLogin, showProress: _showProgress), 
             )
           ],
         ),
@@ -61,44 +68,29 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-/*
-  _button(String texto, onPressed) {
-    return ElevatedButton(
-        onPressed: onPressed,
-            child: Text(
-              texto,
-              style: const TextStyle(color: Colors.white, fontSize: 22),
-            ),
-          );
-  }
-
- _text(String label, String hint, {bool pwdtext = false, 
-                        TextEditingController ?controller, 
-                        FormFieldValidator<String> ?validator,
-                        TextInputType ?keyboardType,
-                        TextInputAction ?textInputAction}) {
-    return TextFormField(
-      controller: controller,
-      validator: validator,
-      obscureText: pwdtext,
-      keyboardType: keyboardType,
-      textInputAction: textInputAction,
-       decoration: InputDecoration(
-          labelText: label,
-          labelStyle: const TextStyle(fontSize: 25, color: Colors.grey),
-          hintText: hint,
-          hintStyle: const TextStyle(fontSize: 16)),
-      style: const TextStyle(
-        fontSize: 25,
-      ),
-    );
-  }
-*/
- _onClickLogin() {
+ _onClickLogin() async{
      if (!_formKey.currentState!.validate()){
       return;
     }
-    debugPrint("Login_____");
+    String login = _tLogin.text;
+    String senha = _tSenha.text;
+    setState(() {
+      _showProgress = true;
+    });
+    ApiResponse response = await LoginApi.login(login, senha);
+
+    if (response.ok!){
+      Usuario user = response.result;
+      debugPrint(user.toString());
+      push(context, const HomePage(), replace: true);
+      
+    }else{
+      //debugPrint(response.msg);
+      alert(context, response.msg!);
+    }
+    setState(() {
+      _showProgress = false;
+    });
   }
 
   String? _validateLogin(String? value) {
