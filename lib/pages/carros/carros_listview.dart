@@ -2,17 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:zyota/domains/carros.dart';
 import 'package:zyota/pages/carros/carros_api.dart';
 
-class CarrosListView extends StatelessWidget {
+class CarrosListView extends StatefulWidget {
   final String tipo;
   const CarrosListView(this.tipo, {super.key});
 
   @override
+  State<CarrosListView> createState() => _CarrosListViewState();
+}
+
+class _CarrosListViewState extends State<CarrosListView> with AutomaticKeepAliveClientMixin<CarrosListView> {
+
+  @override
+  bool get wantKeepAlive => true;
+  //bool get wantKeepAlive => throw UnimplementedError();
+  
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return _body();
   }
 
   _body() {
-    Future<List<Carro>> future = CarrosApi.getCarros(tipo);
+    Future<List<Carro>> future = CarrosApi.getCarros(widget.tipo);
 
     return FutureBuilder(
       future: future,
@@ -101,4 +112,6 @@ class CarrosListView extends StatelessWidget {
       ),
     );
   }
+  
+  
 }

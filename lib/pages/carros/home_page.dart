@@ -3,9 +3,14 @@ import 'package:zyota/drawer_menu.dart';
 import 'package:zyota/pages/carros/carros_api.dart';
 import 'package:zyota/pages/carros/carros_listview.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin<HomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
