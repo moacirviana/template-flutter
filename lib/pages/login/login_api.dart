@@ -1,8 +1,7 @@
 import 'dart:convert' as convert;
-import 'package:zyota/utils/api_response.dart';
+import 'package:zyota/pages/api_response.dart';
 import 'package:zyota/domains/usuario.dart';
 import 'package:http/http.dart' as http;
-
 
 class LoginApi {
   static Future<ApiResponse<Usuario>> login(String login, String senha) async {
@@ -13,8 +12,8 @@ class LoginApi {
 
       Map<String, String> headers = {"Content-Type": "application/json"};
 
-      var response =
-          await http.post(url, body: convert.json.encode(params), headers: headers);
+      var response = await http.post(url,
+          body: convert.json.encode(params), headers: headers);
 
       var jsonResponse =
           convert.jsonDecode(response.body) as Map<String, dynamic>;

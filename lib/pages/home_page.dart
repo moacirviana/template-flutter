@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zyota/menu_drawer_list.dart';
+import 'package:zyota/drawer_menu.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,13 +13,16 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: _body(),
-      drawer: MenuDrawerList(),
+      drawer: const MenuDrawerList(),
     );
   }
-  
+
   _body() {
     return const Center(
-      child: Text("Página principal do app", style: TextStyle(fontSize: 22),),
+      child: Text(
+        "Página principal do app",
+        style: TextStyle(fontSize: 22),
+      ),
     );
   }
 }
