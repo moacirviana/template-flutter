@@ -22,7 +22,7 @@ class CarrosApi {
         "Content-Type": "application/json",
         "Authorization": " Bearer ${usuario.token}"
       };
-      //debugPrint(headers.toString());
+      debugPrint('Chamada da API  ${url.toString()}');
 
       var response = await http.get(url, headers: headers);
       //var response = await http.get(url);

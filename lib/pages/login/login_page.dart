@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zyota/domains/usuario.dart';
-import 'package:zyota/pages/carros/home_page.dart';
+import 'package:zyota/pages/home_page.dart';
 import 'login_api.dart';
 import 'package:zyota/utils/alert.dart';
 import 'package:zyota/utils/nav.dart';

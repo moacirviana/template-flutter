@@ -1,6 +1,7 @@
 //import 'package:zyota/utils/api_url.dart';
 import 'package:zyota/domains/servidor.dart';
 import 'package:zyota/domains/usuario.dart';
+import 'package:zyota/pages/carros/carros_home_page.dart';
 import 'package:zyota/pages/login/login_page.dart';
 import 'package:zyota/utils/nav.dart';
 import 'package:flutter/material.dart';
@@ -25,11 +26,18 @@ class MenuDrawerList extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.account_box_sharp),
-              title: const Text("Afastamentos"),
-              subtitle: const Text("Ferias,Folgas..."),
+              leading: const Icon(Icons.home),
+              title: const Text("Home"),
+              subtitle: const Text("Página principal"),
               trailing: const Icon(Icons.arrow_forward),
-              onTap: () => _onClickMenu(context),
+              onTap: () => _goToHomePage(context),
+            ),
+            ListTile(
+              leading: const Icon(Icons.car_rental),
+              title: const Text("Carros"),
+              subtitle: const Text("Consulta os carros do TREAM"),
+              trailing: const Icon(Icons.arrow_forward),
+              onTap: () => _goCarrosList(context),
             ),
             ListTile(
               leading: const Icon(Icons.exit_to_app),
@@ -53,9 +61,14 @@ class MenuDrawerList extends StatelessWidget {
     );
   }
 
-  _onClickMenu(BuildContext context) {
+  _goToHomePage(BuildContext context) {
     Navigator.pop(context);
     push(context, const HomePage(), replace: true);
+  }
+
+  _goCarrosList(BuildContext context) {
+    Navigator.pop(context);
+    push(context, const CarrosHomePage(), replace: true);
   }
 
   _onClickLogout(BuildContext context) {

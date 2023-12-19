@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:zyota/domains/carros.dart';
 import 'package:zyota/pages/carros/carros_api.dart';
+import 'package:zyota/pages/carros/carros_detalhes.dart';
+import 'package:zyota/utils/nav.dart';
 
 class CarrosListView extends StatefulWidget {
   final String tipo;
@@ -10,18 +12,38 @@ class CarrosListView extends StatefulWidget {
   State<CarrosListView> createState() => _CarrosListViewState();
 }
 
-class _CarrosListViewState extends State<CarrosListView> with AutomaticKeepAliveClientMixin<CarrosListView> {
-
+class _CarrosListViewState extends State<CarrosListView>
+    with AutomaticKeepAliveClientMixin<CarrosListView> {
+  List<Carro>? carros;
   @override
   bool get wantKeepAlive => true;
   //bool get wantKeepAlive => throw UnimplementedError();
-  
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return _body();
+    if (carros == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return _listViewBuilder(carros!);
   }
 
+  _loadData() async {
+    List<Carro> carros = await CarrosApi.getCarros(widget.tipo);
+    setState(() {
+      this.carros = carros;
+    });
+  }
+
+/*
   _body() {
     Future<List<Carro>> future = CarrosApi.getCarros(widget.tipo);
 
@@ -50,7 +72,7 @@ class _CarrosListViewState extends State<CarrosListView> with AutomaticKeepAlive
       },
     );
   }
-
+*/
   _listViewBuilder(List<Carro> carros) {
     return Container(
       padding: const EdgeInsets.all(5),
@@ -91,9 +113,7 @@ class _CarrosListViewState extends State<CarrosListView> with AutomaticKeepAlive
                       children: <Widget>[
                         TextButton(
                           child: const Text('DETALHES'),
-                          onPressed: () {
-                            /* ... */
-                          },
+                          onPressed: () => _onClickDetalhes(c),
                         ),
                         TextButton(
                           child: const Text('SHARE'),
@@ -112,6 +132,8 @@ class _CarrosListViewState extends State<CarrosListView> with AutomaticKeepAlive
       ),
     );
   }
-  
-  
+
+  _onClickDetalhes(Carro c) {
+    push(context, CarrosDetalhes(c));
+  }
 }

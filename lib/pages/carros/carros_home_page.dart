@@ -4,24 +4,24 @@ import 'package:zyota/pages/carros/carros_api.dart';
 import 'package:zyota/pages/carros/carros_listview.dart';
 import 'package:zyota/utils/prefers_user.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class CarrosHomePage extends StatefulWidget {
+  const CarrosHomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<CarrosHomePage> createState() => _CarrosHomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin<HomePage> {
+class _CarrosHomePageState extends State<CarrosHomePage>
+    with SingleTickerProviderStateMixin<CarrosHomePage> {
   TabController? _tabController;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _initTabs();
   }
 
-_initTabs() async {
-
+  _initTabs() async {
     int tabIdx = await Prefs.getInt("tabIdx");
 
     _tabController = TabController(length: 3, vsync: this);
@@ -45,36 +45,34 @@ _initTabs() async {
     }); 
   */
 
-
   @override
   Widget build(BuildContext context) {
+    debugPrint("chamado o buildcontext");
     return Scaffold(
       appBar: AppBar(
         title: const Center(
           child: Text("TRE-AM Carros"),
         ),
-        bottom:  _tabController == null
+        bottom: _tabController == null
             ? null
-            : TabBar(
-          controller: _tabController,
-          tabs: [
-           Tab(text: "Clássicos"),
-           Tab(text: "Esportivos"),
-           Tab(text: "Luxo"),
-        ]),
+            : TabBar(controller: _tabController, tabs: [
+                Tab(text: "Clássicos"),
+                Tab(text: "Esportivos"),
+                Tab(text: "Luxo"),
+              ]),
       ),
-      body:  _tabController == null
-            ?  const Center(
+      body: _tabController == null
+          ? const Center(
               child: CircularProgressIndicator(),
             )
-            : TabBarView(
-        controller: _tabController,
-        children: [
-          CarrosListView(TipoCarro.classicos),
-          CarrosListView(TipoCarro.esportivos),
-          CarrosListView(TipoCarro.luxo),
-        ],
-      ),
+          : TabBarView(
+              controller: _tabController,
+              children: [
+                CarrosListView(TipoCarro.classicos),
+                CarrosListView(TipoCarro.esportivos),
+                CarrosListView(TipoCarro.luxo),
+              ],
+            ),
       drawer: const MenuDrawerList(),
     );
   }
