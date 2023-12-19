@@ -56,6 +56,13 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(16),
         child: ListView(
           children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: Image.asset(
+                'assets/images/brasao-brasil.png',
+                height: 150,
+              ),
+            ),
             AppTextField(
               "Login",
               "Digite o login",
