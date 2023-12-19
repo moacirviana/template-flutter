@@ -1,4 +1,4 @@
 class ApiServer {
   static const String domain = "carros-springboot.herokuapp.com";
-  static const String url = "api/v1";
+  static const String url = "api/v2";
 }

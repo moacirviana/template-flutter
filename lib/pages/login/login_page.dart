@@ -97,8 +97,8 @@ class _LoginPageState extends State<LoginPage> {
     ApiResponse response = await LoginApi.login(login, senha);
 
     if (response.ok!) {
-      Usuario user = response.result;
-      debugPrint(user.toString());
+      //Usuario user = response.result;
+      //debugPrint(user.toString());
       push(context, const HomePage(), replace: true);
     } else {
       //debugPrint(response.msg);
