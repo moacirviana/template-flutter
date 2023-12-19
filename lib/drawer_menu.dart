@@ -1,5 +1,6 @@
 //import 'package:zyota/utils/api_url.dart';
 import 'package:zyota/domains/servidor.dart';
+import 'package:zyota/domains/usuario.dart';
 import 'package:zyota/pages/login/login_page.dart';
 import 'package:zyota/utils/nav.dart';
 import 'package:flutter/material.dart';
@@ -8,39 +9,19 @@ import 'package:zyota/pages/home_page.dart';
 class MenuDrawerList extends StatelessWidget {
   const MenuDrawerList({super.key});
 
-  final String urlFoto =
-      'https://intrapp.tre-am.jus.br/apiPortalServ/servidor/getfoto/2301634';
-
-/*
-  _userAccountHeader(Servidor s) {
-    const urlServer = ApiServer.url;
-    String urlFoto =
-        "https://$urlServer/apiPortalServ/servidor/getfoto/${s.id}";
-    return UserAccountsDrawerHeader(
-      accountName: Text("${s.nome}"),
-      accountEmail: Text("${s.email}"),
-      currentAccountPicture: CircleAvatar(
-        backgroundImage: NetworkImage(urlFoto),
-      ),
-    );
-  }
-*/
 
   @override
   Widget build(BuildContext context) {
-    Future<Servidor> future = Servidor.get();
+    Future<Usuario> future = Usuario.get();
 
     return SafeArea(
       child: Drawer(
         child: ListView(
           children: [
-            UserAccountsDrawerHeader(
-              accountName: Text("NOME DO USUARIO"),
-              accountEmail: Text("fulano@tre-am.jus.br"),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(urlFoto),
-              ),
-            ),
+            FutureBuilder(future: future, builder: (context, snapshot) {
+                Usuario? user = snapshot.data;
+                return user != null ? _header(user) : Container();
+            },),
             ListTile(
               leading: const Icon(Icons.account_box_sharp),
               title: const Text("Afastamentos"),
@@ -58,6 +39,16 @@ class MenuDrawerList extends StatelessWidget {
         ),
       ),
     );
+  }
+
+ _header(Usuario user) {
+    return UserAccountsDrawerHeader(
+            accountName: Text(user.nome!),
+            accountEmail: Text(user.email!),
+            currentAccountPicture: CircleAvatar(
+              backgroundImage: NetworkImage(user.urlFoto!),
+            ),
+          );
   }
 
   _onClickMenu(BuildContext context) {
