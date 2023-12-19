@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:zyota/domains/usuario.dart';
 import 'package:zyota/pages/home_page.dart';
@@ -21,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   final _tLogin = TextEditingController();
   final _tSenha = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _showProgress = false;
+  final _streamController = StreamController<bool>();
 
   @override
   void initState() {
@@ -76,8 +77,15 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(
               height: 46,
-              child:
-                  AppButton("Login", _onClickLogin, showProress: _showProgress),
+              child: StreamBuilder<bool>(
+                  stream: _streamController.stream,
+                  builder: (context, snapshot) {
+                    return AppButton(
+                      "Login",
+                      _onClickLogin,
+                      showProgress: snapshot.data ?? false,
+                    );
+                  }),
             )
           ],
         ),
@@ -91,9 +99,8 @@ class _LoginPageState extends State<LoginPage> {
     }
     String login = _tLogin.text;
     String senha = _tSenha.text;
-    setState(() {
-      _showProgress = true;
-    });
+    _streamController.add(true);
+
     ApiResponse response = await LoginApi.login(login, senha);
 
     if (response.ok!) {
@@ -104,9 +111,7 @@ class _LoginPageState extends State<LoginPage> {
       //debugPrint(response.msg);
       alert(context, response.msg!);
     }
-    setState(() {
-      _showProgress = false;
-    });
+    _streamController.add(false);
   }
 
   String? _validateLogin(String? value) {
