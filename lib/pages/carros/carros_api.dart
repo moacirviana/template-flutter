@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:zyota/domains/carros.dart';
@@ -13,30 +12,22 @@ class TipoCarro {
 
 class CarrosApi {
   static Future<List<Carro>> getCarros(String tipoCarro) async {
-    try {
-      Usuario usuario = await Usuario.get();
-      var url = Uri.https(ApiServer.domain,
-          '${ApiServer.url}/carros/tipo/${tipoCarro.toLowerCase()}');
+    Usuario usuario = await Usuario.get();
+    var url = Uri.https(ApiServer.domain,
+        '${ApiServer.url}/carros/tipo/${tipoCarro.toLowerCase()}');
 
-      Map<String, String> headers = {
-        "Content-Type": "application/json",
-        "Authorization": " Bearer ${usuario.token}"
-      };
-      debugPrint('Chamada da API  ${url.toString()}');
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+      "Authorization": " Bearer ${usuario.token}"
+    };
+    //debugPrint('Chamada da API  ${url.toString()}');
+    var response = await http.get(url, headers: headers);
+    //var response = await http.get(url);
+    List list = convert.json.decode(response.body);
 
-      var response = await http.get(url, headers: headers);
-      //var response = await http.get(url);
-
-      List list = convert.json.decode(response.body);
-
-      final lstCarros = list.map<Carro>((e) => Carro.fromJson(e)).toList();
-      return lstCarros;
-      //await Future.delayed(const Duration(seconds: 2));
-    } catch (e, exception) {
-      //debugPrint('ocorreu um erro ${e.toString()} ==> $exception');
-      //debugPrint(tipoCarro);
-      return [];
-    }
+    final lstCarros = list.map<Carro>((e) => Carro.fromJson(e)).toList();
+    return lstCarros;
+    //await Future.delayed(const Duration(seconds: 2));
   }
 }
 

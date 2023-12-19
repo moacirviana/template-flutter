@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:zyota/domains/carros.dart';
 import 'package:zyota/pages/carros/carros_api.dart';
+import 'package:zyota/pages/carros/carros_bloc.dart';
 import 'package:zyota/pages/carros/carros_detalhes.dart';
 import 'package:zyota/utils/nav.dart';
+import 'package:zyota/widgets/text_error.dart';
 
 class CarrosListView extends StatefulWidget {
   final String tipo;
@@ -15,8 +17,8 @@ class CarrosListView extends StatefulWidget {
 
 class _CarrosListViewState extends State<CarrosListView>
     with AutomaticKeepAliveClientMixin<CarrosListView> {
-  List<Carro>? carros;
-  final _streamController = StreamController<List<Carro>>();
+  String get tipo => widget.tipo;
+  final _bloc = CarrosBloc();
 
   @override
   bool get wantKeepAlive => true;
@@ -24,12 +26,7 @@ class _CarrosListViewState extends State<CarrosListView>
   @override
   void initState() {
     super.initState();
-    _loadData();
-  }
-
-  _loadData() async {
-    List<Carro> carros = await CarrosApi.getCarros(widget.tipo);
-    _streamController.add(carros);
+    _bloc.findAll(tipo);
   }
 
   @override
@@ -37,16 +34,11 @@ class _CarrosListViewState extends State<CarrosListView>
     super.build(context);
 
     return StreamBuilder(
-        stream: _streamController.stream,
+        stream: _bloc.stream,
         builder: (context, snapshot) {
           // SE OCORREU ALGUM ERRO
           if (snapshot.hasError) {
-            return const Center(
-              child: Text(
-                "Não foi possível buscar os registros",
-                style: TextStyle(color: Colors.red, fontSize: 22),
-              ),
-            );
+            return const TextError("Não foi possível obter os dados!");
           }
           // SE NÃO TEM DADOS MOSTRA PROGRESS INDICATOR
           if (!snapshot.hasData) {
@@ -55,8 +47,8 @@ class _CarrosListViewState extends State<CarrosListView>
             );
           } else {
             // SE TEM DADOS MOSTRA A LISTA
-            List<Carro>? carros = snapshot.data;
-            return _listViewBuilder(carros!);
+            List<Carro> carros = snapshot.data!;
+            return _listViewBuilder(carros);
           }
         });
   }
@@ -128,6 +120,6 @@ class _CarrosListViewState extends State<CarrosListView>
   @override
   void dispose() {
     super.dispose();
-    _streamController.close();
+    _bloc.dispose();
   }
 }

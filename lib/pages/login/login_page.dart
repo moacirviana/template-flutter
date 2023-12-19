@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:zyota/domains/usuario.dart';
 import 'package:zyota/pages/home_page.dart';
-import 'login_api.dart';
+import 'package:zyota/pages/login/login_bloc.dart';
 import 'package:zyota/utils/alert.dart';
 import 'package:zyota/utils/nav.dart';
 import 'package:zyota/pages/api_response.dart';
@@ -22,7 +22,8 @@ class _LoginPageState extends State<LoginPage> {
   final _tLogin = TextEditingController();
   final _tSenha = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final _streamController = StreamController<bool>();
+
+  final _bloc = LoginBloc();
 
   @override
   void initState() {
@@ -85,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 46,
               child: StreamBuilder<bool>(
-                  stream: _streamController.stream,
+                  stream: _bloc.buttonStream,
                   builder: (context, snapshot) {
                     return AppButton(
                       "Login",
@@ -106,9 +107,8 @@ class _LoginPageState extends State<LoginPage> {
     }
     String login = _tLogin.text;
     String senha = _tSenha.text;
-    _streamController.add(true);
 
-    ApiResponse response = await LoginApi.login(login, senha);
+    ApiResponse response = await _bloc.login(login, senha);
 
     if (response.ok!) {
       //Usuario user = response.result;
@@ -118,7 +118,6 @@ class _LoginPageState extends State<LoginPage> {
       //debugPrint(response.msg);
       alert(context, response.msg!);
     }
-    _streamController.add(false);
   }
 
   String? _validateLogin(String? value) {
@@ -141,6 +140,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     super.dispose();
-    _streamController.close();
+    _bloc.dispose();
   }
 }
