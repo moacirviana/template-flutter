@@ -16,16 +16,24 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _tLogin = TextEditingController(text: "user");
-  final _tSenha = TextEditingController(text: "123");
-  //final _tLogin = TextEditingController();
-  //final _tSenha = TextEditingController();
+  //final _tLogin = TextEditingController(text: "user");
+  //final _tSenha = TextEditingController(text: "123");
+  final _tLogin = TextEditingController();
+  final _tSenha = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _showProgress = false;
 
   @override
   void initState() {
     super.initState();
+    Future<Usuario> future = Usuario.get();
+    future.then((value) {
+      if (value.login != null) {
+        setState(() {
+          _tLogin.text = value.login!;
+        });
+      }
+    });
   }
 
   @override
