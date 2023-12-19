@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:zyota/domains/carros.dart';
 import 'package:zyota/pages/carros/carros_api.dart';
@@ -15,9 +16,10 @@ class CarrosListView extends StatefulWidget {
 class _CarrosListViewState extends State<CarrosListView>
     with AutomaticKeepAliveClientMixin<CarrosListView> {
   List<Carro>? carros;
+  final _streamController = StreamController<List<Carro>>();
+
   @override
   bool get wantKeepAlive => true;
-  //bool get wantKeepAlive => throw UnimplementedError();
 
   @override
   void initState() {
@@ -25,54 +27,40 @@ class _CarrosListViewState extends State<CarrosListView>
     _loadData();
   }
 
+  _loadData() async {
+    List<Carro> carros = await CarrosApi.getCarros(widget.tipo);
+    _streamController.add(carros);
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    if (carros == null) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-    return _listViewBuilder(carros!);
+
+    return StreamBuilder(
+        stream: _streamController.stream,
+        builder: (context, snapshot) {
+          // SE OCORREU ALGUM ERRO
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text(
+                "Não foi possível buscar os registros",
+                style: TextStyle(color: Colors.red, fontSize: 22),
+              ),
+            );
+          }
+          // SE NÃO TEM DADOS MOSTRA PROGRESS INDICATOR
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            // SE TEM DADOS MOSTRA A LISTA
+            List<Carro>? carros = snapshot.data;
+            return _listViewBuilder(carros!);
+          }
+        });
   }
 
-  _loadData() async {
-    List<Carro> carros = await CarrosApi.getCarros(widget.tipo);
-    setState(() {
-      this.carros = carros;
-    });
-  }
-
-/*
-  _body() {
-    Future<List<Carro>> future = CarrosApi.getCarros(widget.tipo);
-
-    return FutureBuilder(
-      future: future,
-      builder: (context, snapshot) {
-        // SE OCORREU ALGUM ERRO
-        if (snapshot.hasError) {
-          return const Center(
-            child: Text(
-              "Não foi possível buscar os registros",
-              style: TextStyle(color: Colors.red, fontSize: 22),
-            ),
-          );
-        }
-        // SE NÃO TEM DADOS MOSTRA PROGRESS INDICATOR
-        if (!snapshot.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          // SE TEM DADOS MOSTRA A LISTA
-          List<Carro>? carros = snapshot.data;
-          return _listViewBuilder(carros!);
-        }
-      },
-    );
-  }
-*/
   _listViewBuilder(List<Carro> carros) {
     return Container(
       padding: const EdgeInsets.all(5),
