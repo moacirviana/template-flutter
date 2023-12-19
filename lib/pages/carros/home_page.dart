@@ -21,14 +21,20 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   }
 
 _initTabs() async {
-   _tabController = TabController(length: 3, vsync: this);
-   int tabIdx = await Prefs.getInt("tabIdx");
-   _tabController!.index = tabIdx;
-    
-    _tabController!.addListener(() {
-       Prefs.setInt("tabIdx", _tabController!.index);
+
+    int tabIdx = await Prefs.getInt("tabIdx");
+
+    _tabController = TabController(length: 3, vsync: this);
+
+    setState(() {
+      _tabController!.index = tabIdx;
     });
-}
+
+    _tabController!.addListener(() {
+      Prefs.setInt("tabIdx", _tabController!.index);
+    });
+  }
+
 /*
  Future<int> future = Prefs.getInt("tabIdx");
     future.then((value) {
@@ -47,7 +53,9 @@ _initTabs() async {
         title: const Center(
           child: Text("TRE-AM Carros"),
         ),
-        bottom: TabBar(
+        bottom:  _tabController == null
+            ? null
+            : TabBar(
           controller: _tabController,
           tabs: [
            Tab(text: "Clássicos"),
@@ -55,7 +63,11 @@ _initTabs() async {
            Tab(text: "Luxo"),
         ]),
       ),
-      body: TabBarView(
+      body:  _tabController == null
+            ?  const Center(
+              child: CircularProgressIndicator(),
+            )
+            : TabBarView(
         controller: _tabController,
         children: [
           CarrosListView(TipoCarro.classicos),
