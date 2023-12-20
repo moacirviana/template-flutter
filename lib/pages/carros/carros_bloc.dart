@@ -1,22 +1,17 @@
-import 'dart:async';
 import 'package:zyota/pages/carros/carros_api.dart';
 import 'package:zyota/domains/carros.dart';
+import 'package:zyota/utils/stream_bloc.dart';
 
-class CarrosBloc {
-  final _streamController = StreamController<List<Carro>>();
-
-  Stream<List<Carro>> get stream => _streamController.stream;
-
+// BLoC - Business Logic Object Components
+// separação da regra de negócio da interface
+// busca os dados na classe api por meio de streams. (ajuda na atualização de tela de forma reativa)
+class CarrosBloc extends StreamBloc<List<Carro>> {
   findAll(String tipo) async {
     try {
       List<Carro> lstCarros = await CarrosApi.getCarros(tipo);
-      _streamController.add(lstCarros);
+      add(lstCarros);
     } catch (e) {
-      _streamController.addError(e);
+      addError(e);
     }
-  }
-
-  void dispose() {
-    _streamController.close();
   }
 }

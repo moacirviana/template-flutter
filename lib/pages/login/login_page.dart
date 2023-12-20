@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 46,
               child: StreamBuilder<bool>(
-                  stream: _bloc.buttonStream,
+                  stream: _bloc.stream,
                   builder: (context, snapshot) {
                     return AppButton(
                       "Login",
