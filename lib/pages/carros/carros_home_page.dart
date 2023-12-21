@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zyota/drawer_menu.dart';
 import 'package:zyota/pages/carros/carros_api.dart';
-import 'package:zyota/pages/carros/carros_listview.dart';
+import 'package:zyota/pages/carros/carros_page.dart';
 import 'package:zyota/utils/prefers_user.dart';
 
 class CarrosHomePage extends StatefulWidget {
@@ -47,7 +47,6 @@ class _CarrosHomePageState extends State<CarrosHomePage>
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("chamado o buildcontext");
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -55,7 +54,7 @@ class _CarrosHomePageState extends State<CarrosHomePage>
         ),
         bottom: _tabController == null
             ? null
-            : TabBar(controller: _tabController, tabs: [
+            : TabBar(controller: _tabController, tabs: const [
                 Tab(text: "Clássicos"),
                 Tab(text: "Esportivos"),
                 Tab(text: "Luxo"),
@@ -67,10 +66,10 @@ class _CarrosHomePageState extends State<CarrosHomePage>
             )
           : TabBarView(
               controller: _tabController,
-              children: [
-                CarrosListView(TipoCarro.classicos),
-                CarrosListView(TipoCarro.esportivos),
-                CarrosListView(TipoCarro.luxo),
+              children: const [
+                CarrosPage(TipoCarro.classicos),
+                CarrosPage(TipoCarro.esportivos),
+                CarrosPage(TipoCarro.luxo),
               ],
             ),
       drawer: const MenuDrawerList(),

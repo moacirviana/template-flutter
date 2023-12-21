@@ -6,12 +6,14 @@ import 'package:zyota/utils/stream_bloc.dart';
 // separação da regra de negócio da interface
 // busca os dados na classe api por meio de streams. (ajuda na atualização de tela de forma reativa)
 class CarrosBloc extends StreamBloc<List<Carro>> {
-  findAll(String tipo) async {
+  Future<List<Carro>> findAll(String tipo) async {
     try {
-      List<Carro> lstCarros = await CarrosApi.getCarros(tipo);
-      add(lstCarros);
+      List<Carro> carros = await CarrosApi.getCarros(tipo);
+      add(carros);
+      return carros;
     } catch (e) {
       addError(e);
     }
+    return [];
   }
 }
