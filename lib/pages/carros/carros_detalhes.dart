@@ -128,7 +128,7 @@ class _CarrosDetalhesState extends State<CarrosDetalhes> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             text(widget.carro.nome!, fontSize: 20, bold: true),
-            text(widget.carro.tipo!, fontSize: 16),
+            text("${widget.carro.tipo!} (${widget.carro.id!})", fontSize: 16),
           ],
         ),
         Row(
