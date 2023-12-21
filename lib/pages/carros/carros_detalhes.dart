@@ -11,9 +11,51 @@ class CarrosDetalhes extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(carro.nome!),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.place),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.videocam),
+          ),
+          PopupMenuButton(
+              onSelected: (value) => _onPopupMenu(value),
+              itemBuilder: (context) {
+                return [
+                  const PopupMenuItem(
+                    value: "edit",
+                    child: Text("Editar"),
+                  ),
+                  const PopupMenuItem(
+                    value: "delete",
+                    child: Text("Deletar"),
+                  ),
+                  const PopupMenuItem(
+                    value: "share",
+                    child: Text("Share"),
+                  )
+                ];
+              })
+        ],
       ),
       body: _body(),
     );
+  }
+
+  _onPopupMenu(String value) {
+    switch (value) {
+      case "edit":
+        debugPrint("Clickou editar");
+        break;
+      case "delete":
+        debugPrint("Clickou deletar");
+        break;
+      case "share":
+        debugPrint("Clickou compartilhar");
+        break;
+    }
   }
 
   _body() {
