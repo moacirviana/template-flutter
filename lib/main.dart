@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zyota/pages/login/login_page.dart';
+import 'package:zyota/splash_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           //brightness: Brightness.dark,
           scaffoldBackgroundColor: Colors.white),
-      home: const LoginPage(),
+      home: const SplashPage(),
     );
   }
 }
