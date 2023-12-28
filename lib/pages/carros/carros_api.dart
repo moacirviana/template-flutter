@@ -25,7 +25,18 @@ class CarrosApi {
     //var response = await http.get(url);
     List list = convert.json.decode(response.body);
 
-    final lstCarros = list.map<Carro>((e) => Carro.fromJson(e)).toList();
+    final lstCarros = list.map<Carro>((map) => Carro.fromMap(map)).toList();
+    /*
+    try {
+      final dao = CarroDAO();
+      lstCarros.forEach((c) {
+        debugPrint("Carro ${c.toString()}");
+        dao.save(c);
+      });
+    } catch (e) {
+      debugPrint("Ocorreu erro: $e");
+    }
+  */
     return lstCarros;
     //await Future.delayed(const Duration(seconds: 2));
   }
